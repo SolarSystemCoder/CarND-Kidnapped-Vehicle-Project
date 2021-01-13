@@ -49,6 +49,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
     p.weight = 1.0;
     
     particles.push_back(p);
+    weights.push_back(p.weight);
   }
   is_initialized = true;
 
@@ -180,7 +181,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
       }
             
     }
-    weights.push_back(particles[i].weight);
+    weights[i] = particles[i].weight;
   }
   
 
@@ -198,7 +199,7 @@ void ParticleFilter::resample() {
   std::mt19937 gen(rd());
   std::uniform_int_distribution<int> distr(0, num_particles-1);
   double max_v = *max_element(weights.begin(), weights.end());
-
+  std::cout << "max: " << max_v << "\t" << weights.size() <<std::endl;
   std::uniform_real_distribution<double> distrR(0.0, max_v);
 
   double beta = 0.0;
